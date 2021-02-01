@@ -1,0 +1,43 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enable: false
+      routes:
+        - id: hello
+          uri: http://localhost:8081
+          predicates:
+            - Path=/hello/**
+          filters:
+            - RewritePath=/hello/(?<path>.*), /$\{path}
+          metadata:
+            connect-timeout: 1000
+            response-timeout: 1000
+
+      httpclient:
+        connect-timeout: 10000
+        response-timeout: 10s
+
+
+logging:
+  level:
+    root: info
+    reactor.netty.http.server.AccessLog: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "info"
+          - "health"
+          - "gateway"
+          - "bus-refresh"
+  endpoint:
+    gateway:
+      enabled: true
