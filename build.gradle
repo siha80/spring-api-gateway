@@ -18,6 +18,10 @@ repositories {
 	maven { url = uri("https://repo.spring.io/milestone") }
 }
 
+springBoot {
+	mainClass = 'com.hli.api.gw.apigateway.ApiGatewayApplication'
+}
+
 String imageName = "siha80/spring-api-gateway-docker:$version"
 docker {
 	name imageName
